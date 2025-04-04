@@ -16,11 +16,7 @@ app.get('*', (req, res) => {
 
 // HTTP 서버 생성
 const PORT = process.env.PORT || 8080;
-const server = http.createServer(app);
-
-// WebSocket 서버를 HTTP 서버에 연결
-const wss = new WebSocket.Server({ server });
-
+const wss = new WebSocket.Server({ port: PORT });
 // 기존 WebSocket 코드...
 // 연결된 클라이언트를 저장할 Map
 const clients = new Map();
