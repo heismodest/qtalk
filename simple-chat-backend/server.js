@@ -1,7 +1,8 @@
 const WebSocket = require('ws');
 
 // WebSocket 서버 생성 (포트: 8080)
-const wss = new WebSocket.Server({ port: 8080 });
+const PORT = process.env.PORT || 8080;
+const wss = new WebSocket.Server({ port: PORT });
 
 // 연결된 클라이언트를 저장할 Map (WebSocket 객체 -> 닉네임)
 const clients = new Map(); // <<< Set 대신 Map 사용
