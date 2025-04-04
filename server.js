@@ -29,6 +29,11 @@ const wss = new WebSocket.Server({ server });
 const clients = new Map();
 console.log('WebSocket 서버 시작 (포트: ' + PORT + ')');
 
+// 서버 시작
+server.listen(PORT, () => {
+    console.log(`HTTP 서버가 포트 ${PORT}에서 실행 중입니다.`);
+});
+
 wss.on('connection', (ws) => {
     console.log('클라이언트 연결됨');
     // 처음 연결 시에는 닉네임을 모르므로, 일단 ws 객체만 추가 (나중에 닉네임 설정)
@@ -95,11 +100,6 @@ wss.on('connection', (ws) => {
         } catch (error) {
             console.error('잘못된 메시지 형식 또는 처리 오류:', message.toString(), error);
         }
-    });
-
-// 서버 시작
-    server.listen(PORT, () => {
-    console.log(`HTTP 서버가 포트 ${PORT}에서 실행 중입니다.`);
     });
 
     // 클라이언트 연결 종료 시
