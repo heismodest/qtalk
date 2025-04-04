@@ -1,13 +1,30 @@
 const WebSocket = require('ws');
+const express = require('express');
+const path = require('path');
+const http = require('http');
 
-// WebSocket 서버 생성 (포트: 8080)
+// Express 앱 생성
+const app = express();
+
+// 정적 파일 제공 설정
+app.use(express.static(path.join(__dirname)));
+
+// 모든 경로에 대해 index.html 반환
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// HTTP 서버 생성
 const PORT = process.env.PORT || 8080;
-const wss = new WebSocket.Server({ port: PORT });
+const server = http.createServer(app);
 
-// 연결된 클라이언트를 저장할 Map (WebSocket 객체 -> 닉네임)
-const clients = new Map(); // <<< Set 대신 Map 사용
+// WebSocket 서버를 HTTP 서버에 연결
+const wss = new WebSocket.Server({ server });
 
-console.log('WebSocket 서버 시작 (포트: 8080)');
+// 기존 WebSocket 코드...
+// 연결된 클라이언트를 저장할 Map
+const clients = new Map();
+console.log('WebSocket 서버 시작 (포트: ' + PORT + ')');
 
 wss.on('connection', (ws) => {
     console.log('클라이언트 연결됨');
@@ -75,6 +92,11 @@ wss.on('connection', (ws) => {
         } catch (error) {
             console.error('잘못된 메시지 형식 또는 처리 오류:', message.toString(), error);
         }
+    });
+
+// 서버 시작
+    server.listen(PORT, () => {
+    console.log(`HTTP 서버가 포트 ${PORT}에서 실행 중입니다.`);
     });
 
     // 클라이언트 연결 종료 시

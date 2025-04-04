@@ -6,6 +6,9 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "ws": "^8.x.x"
-  }
+    "ws": "^8.x.x",
+    "express": "^4.x.x",
+    "path": "^0.12.7"
+  },
+  "private": true
 }

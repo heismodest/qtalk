@@ -30,8 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentNickname = null; // 서버에서 확정된 닉네임
 
     // --- WebSocket 서버 주소 ---
-    const WS_URL = 'ws://localhost:8080'; // 로컬 테스트용
-
+    // const WS_URL = 'ws://localhost:8080'; // 로컬 테스트용
+    const WS_URL = window.location.origin.replace('http', 'ws');
+    
     // --- 페이지 로드 시 테마 적용 ---
     const savedTheme = localStorage.getItem('chatTheme');
     if (savedTheme && savedTheme !== themeStyleLink.getAttribute('href')) { // 저장된 테마가 있고 현재 링크와 다르면
