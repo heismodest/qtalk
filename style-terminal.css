@@ -1,0 +1,251 @@
+/* style-terminal.css - 클래식 터미널 테마 */
+
+/* --- 전역 스타일 --- */
+body {
+    background-color: #000000; /* 검은색 배경 */
+    color: lime; /* 기본 글씨색 (연두색/라임) */
+    font-family: 'Consolas', 'Menlo', 'Courier New', monospace; /* 고정폭 글꼴 우선 사용 */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 16px; /* 기본 폰트 크기 */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* --- 앱 컨테이너 --- */
+#app-container {
+    width: 98%; /* 터미널은 보통 꽉 차게 */
+    max-width: 900px; /* 최대 너비 약간 늘림 */
+    height: 95vh; /* 높이 약간 늘림 */
+    background-color: #0a0a0a; /* 약간 밝은 검정 (선택적) */
+    border: 1px solid lime; /* 연두색 테두리 */
+    box-shadow: none;
+    border-radius: 0;
+    display: flex;
+    overflow: hidden;
+}
+
+/* --- 사용자 목록 패널 --- */
+#user-list-panel {
+    width: 160px;
+    background-color: transparent;
+    border-right: 1px solid #333; /* 어두운 회색 구분선 */
+    padding: 8px;
+    color: lime;
+    overflow-y: auto;
+}
+
+#user-list-panel h2 {
+    font-size: 1em;
+    margin: 0 0 8px 0;
+    padding-bottom: 4px;
+    text-align: left;
+    color: lime;
+    border-bottom: 1px solid lime; /* 제목 아래 밑줄 */
+    font-weight: normal; /* 일반 굵기 */
+}
+
+#user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#user-list li {
+    padding: 0; /* 패딩 제거 */
+    margin-bottom: 2px; /* 약간의 간격 */
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: lime; /* 기본 연두색 */
+}
+
+/* '나' 표시 (밝은 흰색) */
+#user-list li[style*="bold"] {
+    font-weight: normal;
+    color: #ffffff; /* 흰색 */
+}
+
+/* --- 채팅 패널 --- */
+#chat-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: transparent;
+}
+
+#messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 8px;
+    font-size: 1em;
+    line-height: 1.3; /* 약간 좁은 줄간격 */
+    color: lime;
+}
+
+/* --- 메시지 스타일 (말풍선 완전 제거) --- */
+.message {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0;
+    margin: 0 0 1px 0; /* 위아래 간격 최소화 */
+    max-width: 100%;
+    align-self: flex-start !important;
+    box-shadow: none !important;
+    word-wrap: break-word;
+    line-height: 1.3;
+    color: lime;
+    /* display: block; */ /* 기본 블록 요소 */
+}
+
+/* sent/received 공통 */
+.message.sent, .message.received {
+    background: none !important;
+    align-self: flex-start !important;
+}
+
+/* 닉네임 표시 (터미널 프롬프트처럼) */
+.message .nickname {
+    display: inline;
+    font-weight: normal;
+    color: lime;
+    margin-right: 0; /* 간격 제거 */
+}
+/* 닉네임 뒤에 '>' 기호 추가 */
+.message .nickname::after {
+    content: "> "; /* 프롬프트 기호 */
+    margin-right: 3px;
+}
+
+/* 타임스탬프 (거의 안 보이게 - 필요시 주석 해제) */
+.message .timestamp {
+    display: none; /* 기본적으로 숨김 */
+    /*
+    display: inline;
+    font-size: 0.7em;
+    color: #555; // 매우 어두운 회색
+    margin-left: 8px;
+    */
+}
+
+/* 메시지 본문 텍스트 */
+.message span:not(.nickname):not(.timestamp) {
+    color: lime; /* 명시적 설정 */
+}
+
+/* 시스템 메시지 (흰색으로 구분) */
+.message.system, .message.user_join, .message.user_leave {
+    color: #ffffff; /* 흰색 */
+    font-style: normal; /* 이탤릭 제거 */
+    text-align: left;
+    align-self: flex-start;
+    background: none !important;
+    padding: 2px 0;
+    margin: 3px 0;
+    width: 100%;
+}
+/* 시스템 메시지 기호 */
+.message.system::before { content: ":: "; }
+.message.user_join::before { content: "++ "; }
+.message.user_leave::before { content: "-- "; }
+
+/* --- 메시지 입력 폼 --- */
+#message-form {
+    display: flex;
+    padding: 4px;
+    background-color: #000000; /* 검정 */
+    border-top: 1px solid #333; /* 어두운 회색 구분선 */
+}
+
+#nickname-input, #message-input {
+    background-color: #000000; /* 검정 배경 */
+    color: lime; /* 입력 글씨 연두색 */
+    border: 1px solid lime; /* 연두색 테두리 */
+    border-radius: 0;
+    padding: 4px 6px;
+    font-family: inherit; /* 고정폭 글꼴 상속 */
+    caret-color: lime; /* 커서 색상 (모든 브라우저 지원 X) */
+}
+
+/* 커서 깜빡임 효과 */
+@keyframes blink-caret {
+    from, to { border-right-color: transparent }
+    50% { border-right-color: lime; }
+}
+#message-input:focus {
+    outline: none;
+    /* 커서를 border로 표현 */
+    border-right: 2px solid lime; /* 커서 두께 및 색상 */
+    padding-right: 4px; /* 커서 공간 확보 */
+    animation: blink-caret 1s step-end infinite;
+}
+
+#nickname-input {
+    width: 80px;
+    margin-right: 4px;
+    flex-grow: 0;
+}
+#nickname-input:focus {
+     border-right: 1px solid lime; /* 포커스 시 원래 테두리 유지 */
+     animation: none; /* 닉네임 필드는 깜빡임 없음 */
+}
+
+#message-input {
+    flex-grow: 1;
+    margin-right: 4px;
+}
+
+#send-button {
+    background-color: #000000; /* 검정 배경 */
+    color: lime; /* 연두색 글씨 */
+    border: 1px solid lime; /* 연두색 테두리 */
+    border-radius: 0;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold; /* 약간 강조 */
+}
+#send-button:hover {
+    background-color: lime; /* 호버 시 배경 반전 */
+    color: #000000; /* 검은 글씨 */
+}
+
+/* 비활성화 상태 */
+#send-button:disabled, #message-input:disabled, #nickname-input:disabled {
+    background-color: #000000;
+    color: #555555; /* 어두운 회색 */
+    border-color: #555555;
+    cursor: not-allowed;
+}
+
+/* --- 테마 선택 버튼 --- */
+#theme-selector {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #333;
+    text-align: center;
+}
+#theme-selector button {
+    min-width: 80px;
+    background-color: #000000;
+    color: lime;
+    border: 1px solid lime;
+    border-radius: 0;
+    padding: 2px 5px;
+    font-size: 0.8em;
+    font-family: inherit;
+    cursor: pointer;
+    margin: 0 3px;
+}
+#theme-selector button:hover {
+    background-color: lime;
+    color: #000000;
+}
