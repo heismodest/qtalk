@@ -22,22 +22,31 @@ body {
     max-width: 800px;
     height: 90vh;
     max-height: 700px;
-    background-color: #006b00; /* 녹색 */
+    background-color: #0022e0; /* 채팅 배경 */
     border: 2px solid #ffffff; /* 테두리 */
     box-shadow: none; /* 그림자 제거 */
     border-radius: 0; /* 각진 모서리 */
     display: flex;
+    flex-direction: column; /* 세로 배치로 변경 */
     overflow: hidden;
 }
 
 /* --- 사용자 목록 패널 --- */
 #user-list-panel {
-    width: 150px;
-    background-color: transparent; /* 배경 투명하게 */
-    border-right: 1px solid #00cc00; /* 약간 어두운 녹색 구분선 */
+    display: flex; /* 내부 요소 가로 배치 */
+    justify-content: space-between; /* 좌우 정렬 */
+    width: 100%;
     padding: 10px;
-    color: #ffffff; /* 흰색 글씨 */
-    overflow-y: auto; /* 필요시 스크롤 */
+    background-color: transparent;
+    border-right: none;
+    border-bottom: 1px solid #00cc00; /* 녹색 구분선 */
+    color: #ffffff;
+    overflow-y: visible;
+}
+
+/* 참여자 목록 영역 */
+.user-list-container {
+    flex: 1; /* 남은 공간 차지 */
 }
 
 #user-list-panel h2 {
@@ -53,6 +62,10 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex; /* 가로로 나열 */
+    flex-wrap: nowrap; /* 줄바꿈 방지 */
+    overflow-x: auto; /* 가로 스크롤 허용 */
+    gap: 5px; /* 참여자 간 간격 */
 }
 
 #user-list li {
@@ -137,7 +150,7 @@ body {
 
 /* 시스템 메시지 */
 .message.system, .message.user_join, .message.user_leave {
-    color: #000dff; /* 노란색 시스템 메시지 */
+    color: #e5ff00; /* 노란색 시스템 메시지 */
     font-style: bold;
     text-align: left; /* 왼쪽 정렬 */
     align-self: flex-start;
@@ -217,15 +230,15 @@ input[type="text"]:focus {
 
 /* --- 테마 선택 버튼 --- */
 #theme-selector {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #00cc00;
-    text-align: center;
-    
-    gap: 5px;          /* 버튼 사이의 간격 */
-    padding-left: 5px;  /* 컨테이너 좌우 여백 (선택적) */
-    padding-right: 5px; /* 컨테이너 좌우 여백 (선택적) */
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
+
 #theme-selector button {
     min-width: 80px;
     background-color: #005500;

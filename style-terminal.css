@@ -27,17 +27,26 @@ body {
     box-shadow: none;
     border-radius: 0;
     display: flex;
+    flex-direction: column; /* 세로 배치로 변경 */
     overflow: hidden;
 }
 
 /* --- 사용자 목록 패널 --- */
 #user-list-panel {
-    width: 160px;
-    background-color: transparent;
-    border-right: 1px solid #333; /* 어두운 회색 구분선 */
+    display: flex; /* 내부 요소 가로 배치 */
+    justify-content: space-between; /* 좌우 정렬 */
+    width: 100%;
     padding: 8px;
+    background-color: transparent;
+    border-right: none;
+    border-bottom: 1px solid #333; /* 어두운 회색 구분선 */
     color: lime;
-    overflow-y: auto;
+    overflow-y: visible;
+}
+
+/* 참여자 목록 영역 */
+.user-list-container {
+    flex: 1; /* 남은 공간 차지 */
 }
 
 #user-list-panel h2 {
@@ -54,6 +63,10 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex; /* 가로로 나열 */
+    flex-wrap: nowrap; /* 줄바꿈 방지 */
+    overflow-x: auto; /* 가로 스크롤 허용 */
+    gap: 5px; /* 참여자 간 간격 */
 }
 
 #user-list li {
@@ -228,10 +241,12 @@ body {
 
 /* --- 테마 선택 버튼 --- */
 #theme-selector {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid #333;
-    text-align: center;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 #theme-selector button {
     min-width: 80px;
