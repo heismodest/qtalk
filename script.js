@@ -87,13 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             messageData.nickname,
                             messageData.text,
                             messageData.timestamp,
-                            // <<< 중요: currentNickname이 설정되었는지 확인 후 비교
                             !!currentNickname && messageData.nickname === currentNickname
                         );
                         
-                        // 내가 보낸 메시지가 아니라면 알림 시작
+                        // 내가 보낸 메시지가 아닐 경우에만 알림
                         if (!(!!currentNickname && messageData.nickname === currentNickname)) {
-                            startNotification(messageData.nickname);
+                            flashTaskbar(messageData.nickname, messageData.text);
                         }
                         break;
                     case 'user_list':
@@ -314,5 +313,34 @@ document.addEventListener('DOMContentLoaded', () => {
         document.title = originalTitle;
         unreadMessages = 0;
     }
+
+    // 알림 권한 요청 함수 추가 (DOM 로드 시 실행)
+    function requestNotificationPermission() {
+        if ('Notification' in window) {
+            Notification.requestPermission();
+        }
+    }
+
+    // 작업 표시줄 알림 함수 추가
+    function flashTaskbar(senderNickname, messageText) {
+        if (!isPageVisible && 'Notification' in window && Notification.permission === 'granted') {
+            const notification = new Notification('new text', {
+                // body: `${senderNickname}: ${messageText}`,
+                icon: '/favicon.ico', // 파비콘이 있다면 사용
+                silent: true // 알림음 비활성화
+            });
+            
+            // 알림 클릭 시 채팅창 포커스
+            notification.onclick = function() {
+                window.focus();
+                this.close();
+            };
+
+            // 3초 후 자동으로 알림 닫기
+            setTimeout(() => notification.close(), 1000);
+        }
+    }
+
+    requestNotificationPermission();
 
 }); // <<< DOMContentLoaded 리스너 끝
