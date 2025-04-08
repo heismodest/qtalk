@@ -90,6 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             // <<< 중요: currentNickname이 설정되었는지 확인 후 비교
                             !!currentNickname && messageData.nickname === currentNickname
                         );
+                        
+                        // 내가 보낸 메시지가 아니라면 알림 시작
+                        if (!(!!currentNickname && messageData.nickname === currentNickname)) {
+                            startNotification(messageData.nickname);
+                        }
                         break;
                     case 'user_list':
                         console.log('Received user list data:', messageData.users);
@@ -258,5 +263,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 초기 WebSocket 연결 시도
     connectWebSocket();
+
+    // --- 알림 기능 관련 변수 ---
+    let originalTitle = document.title; // 원래 페이지 제목 저장
+    let notificationInterval = null; // 제목 깜박임 인터벌
+    let isPageVisible = true; // 페이지 가시성 상태
+    let unreadMessages = 0; // 읽지 않은 메시지 수
+
+    // 페이지 가시성 변경 감지
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            // 페이지가 다시 보이면 알림 초기화
+            isPageVisible = true;
+            resetNotification();
+        } else {
+            // 페이지가 숨겨지면 상태 업데이트
+            isPageVisible = false;
+        }
+    });
+
+    // 새 메시지 알림 시작
+    function startNotification(senderNickname) {
+        // 페이지가 보이지 않을 때만 알림
+        if (!isPageVisible) {
+            unreadMessages++;
+            
+            // 이미 알림이 활성화되어 있지 않다면 시작
+            if (!notificationInterval) {
+                notificationInterval = setInterval(() => {
+                    // 제목 번갈아 변경하기
+                    if (document.title === originalTitle) {
+                        document.title = `(${unreadMessages}) 새 메시지 - ${senderNickname}`;
+                    } else {
+                        document.title = originalTitle;
+                    }
+                }, 1000); // 1초마다 깜박임
+            } else {
+                // 알림이 이미 활성화된 경우 제목만 업데이트
+                document.title = `(${unreadMessages}) 새 메시지 - ${senderNickname}`;
+            }
+        }
+    }
+
+    // 알림 초기화
+    function resetNotification() {
+        if (notificationInterval) {
+            clearInterval(notificationInterval);
+            notificationInterval = null;
+        }
+        document.title = originalTitle;
+        unreadMessages = 0;
+    }
 
 }); // <<< DOMContentLoaded 리스너 끝
